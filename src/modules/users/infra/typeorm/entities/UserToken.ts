@@ -19,6 +19,9 @@ class UserToken {
     user_id: string;
 
     @UpdateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
     updated_at: Date;
 }
 
