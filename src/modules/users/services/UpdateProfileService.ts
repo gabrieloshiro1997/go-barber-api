@@ -1,10 +1,10 @@
-import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 
-// import AppError from '@shared/errors/AppError';
-import User from '@modules/users/infra/typeorm/entities/User';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import AppError from '@shared/errors/AppError';
+
+import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     user_id: string;
@@ -42,7 +42,7 @@ class UpdateProfileService {
         );
 
         if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
-            throw new AppError('E-mail already in use');
+            throw new AppError('E-mail already in use.');
         }
 
         user.name = name;
@@ -50,7 +50,7 @@ class UpdateProfileService {
 
         if (password && !old_password) {
             throw new AppError(
-                'You need to inform the old password to set new password',
+                'You need to inform old password to set a new password.',
             );
         }
 
@@ -61,13 +61,12 @@ class UpdateProfileService {
             );
 
             if (!checkOldPassword) {
-                throw new AppError('Old password does not match');
+                throw new AppError('Old password does not match.');
             }
-        }
 
-        if (password) {
             user.password = await this.hashProvider.generateHash(password);
         }
+
         return this.usersRepository.save(user);
     }
 }

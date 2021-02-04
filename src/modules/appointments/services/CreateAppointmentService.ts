@@ -1,17 +1,18 @@
-import { startOfHour, isBefore, getHours, format } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
+import { startOfHour, isBefore, getHours, format } from 'date-fns';
 
 import AppError from '@shared/errors/AppError';
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 
-import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
+import Appointment from '../infra/typeorm/entities/Appointment';
+
 interface IRequest {
+    date: Date;
     provider_id: string;
     user_id: string;
-    date: Date;
 }
 
 @injectable()
@@ -48,9 +49,10 @@ class CreateAppointmentService {
 
         if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
             throw new AppError(
-                'You can only create appointments between 8am and 5pm',
+                'You can only create appontments between 8am and 5pm.',
             );
         }
+
         const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
             appointmentDate,
             provider_id,
@@ -67,7 +69,7 @@ class CreateAppointmentService {
         });
 
         const dateFormatted = format(
-            appointmentDate,
+            appointment.date,
             "dd/MM/yyyy 'às' HH:mm'h'",
         );
 
@@ -82,6 +84,7 @@ class CreateAppointmentService {
                 'yyyy-M-d',
             )}`,
         );
+
         return appointment;
     }
 }

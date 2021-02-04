@@ -1,6 +1,6 @@
 import IHashProvider from '../models/IHashProvider';
 
-export default class FakeHashProvider implements IHashProvider {
+class FakeHashProvider implements IHashProvider {
     public async generateHash(payload: string): Promise<string> {
         return payload;
     }
@@ -12,3 +12,5 @@ export default class FakeHashProvider implements IHashProvider {
         return payload === hashed;
     }
 }
+
+export default FakeHashProvider;

@@ -1,7 +1,7 @@
 import {
-    Entity,
-    ObjectIdColumn,
     ObjectID,
+    ObjectIdColumn,
+    Entity,
     Column,
     CreateDateColumn,
     UpdateDateColumn,
@@ -18,9 +18,7 @@ class Notification {
     @Column('uuid')
     recipient_id: string;
 
-    @Column({
-        default: false,
-    })
+    @Column({ default: false })
     read: boolean;
 
     @CreateDateColumn()

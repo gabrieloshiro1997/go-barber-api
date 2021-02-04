@@ -7,6 +7,7 @@ interface ICacheConfig {
         redis: RedisOptions;
     };
 }
+
 export default {
     driver: 'redis',
 

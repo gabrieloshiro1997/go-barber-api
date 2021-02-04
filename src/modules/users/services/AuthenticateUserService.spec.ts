@@ -1,4 +1,5 @@
 import AppError from '@shared/errors/AppError';
+
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import AuthenticateUserService from './AuthenticateUserService';
@@ -22,23 +23,23 @@ describe('AuthenticateUser', () => {
         const user = await fakeUsersRepository.create({
             name: 'John Doe',
             email: 'johndoe@example.com',
-            password: '123456',
+            password: '123123',
         });
 
         const response = await authenticateUser.execute({
             email: 'johndoe@example.com',
-            password: '123456',
+            password: '123123',
         });
 
         expect(response).toHaveProperty('token');
         expect(response.user).toEqual(user);
     });
 
-    it('should be able to authenticate with non existing user', async () => {
+    it('should not be able to authenticate with a non existing user', async () => {
         await expect(
             authenticateUser.execute({
                 email: 'johndoe@example.com',
-                password: '123456',
+                password: '123123',
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
@@ -47,7 +48,7 @@ describe('AuthenticateUser', () => {
         await fakeUsersRepository.create({
             name: 'John Doe',
             email: 'johndoe@example.com',
-            password: '123456',
+            password: '123123',
         });
 
         await expect(
